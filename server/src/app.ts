@@ -35,8 +35,8 @@ export function createApp(): Express {
   app.use((req, res, next) => (req.path.startsWith('/api/v1/imports/') ? next() : smallJson(req, res, next)));
 
   const api = express.Router();
-  // health sem autenticação e sem dado nenhum além de "está de pé"
-  api.get('/health', (_req, res) => sendOk(res, { status: 'UP', voalleConfigured: hasVoalle }));
+  // health sem autenticação e sem dado nenhum além de "está de pé" e da versão (o Portainer/CI conferem)
+  api.get('/health', (_req, res) => sendOk(res, { status: 'UP', version: appConfig.version, voalleConfigured: hasVoalle }));
   api.use(apiRateLimit);
   api.use('/auth', authRouter);
   api.use('/protocols', protocolsRouter);

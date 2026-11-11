@@ -24,10 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # a regra "versão maior que a do ambiente" compara com a base
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -54,8 +54,8 @@ jobs:
       run:
         working-directory: server
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: '24' # o mesmo da imagem Docker (node:24-alpine)
           cache: npm
@@ -78,8 +78,8 @@ jobs:
       run:
         working-directory: web
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: npm
@@ -106,7 +106,7 @@ jobs:
       # no CI não há cliente OAuth nem Voalle: sobe sem login (só para o smoke do health)
       AUTH_ENABLED: 'false'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Construir a imagem (a mesma que o Portainer vai buildar)
         run: docker compose -f docker-compose.yml build
@@ -132,7 +132,7 @@ jobs:
         if: failure()
         run: docker compose -f docker-compose.yml logs --no-color --timestamps > compose-logs.txt
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: compose-logs

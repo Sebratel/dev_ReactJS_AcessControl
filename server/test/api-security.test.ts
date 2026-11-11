@@ -100,7 +100,8 @@ describe('API — autenticação, autorização e validação', () => {
   it('health responde sem login e sem dado sensível', async () => {
     const r = await call('GET', '/health');
     assert.equal(r.status, 200);
-    assert.deepEqual(Object.keys(r.body.data).sort(), ['status', 'voalleConfigured']);
+    assert.deepEqual(Object.keys(r.body.data).sort(), ['status', 'version', 'voalleConfigured']);
+    assert.match(r.body.data.version, /^\d+\.\d+\.\d+$/);
   });
 
   it('sem token é 401; token inválido é 401', async () => {

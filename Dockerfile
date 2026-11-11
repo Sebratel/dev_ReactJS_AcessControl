@@ -16,6 +16,10 @@ RUN npm run build && npm prune --omit=dev
 
 # ---------- 3) imagem final ----------
 FROM node:24-alpine
+# versão da aplicação (vem do compose: ${APP_VERSION:-X.Y.Z}) — aparece no label da imagem
+ARG APP_VERSION=dev
+LABEL org.opencontainers.image.version=$APP_VERSION \
+      org.opencontainers.image.source="https://github.com/Sebratel/dev_ReactJS_AcessControl"
 ENV NODE_ENV=production \
     TZ=America/Sao_Paulo \
     PORT=8080

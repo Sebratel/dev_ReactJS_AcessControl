@@ -1,6 +1,6 @@
 {
   "name": "access-control",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Controle de Acessos — protocolos de Gestão de Acessos do Voalle e quem tem acesso a quê nos HUBs, DataHub, AppSheet e UpValue",
   "scripts": {
@@ -9,6 +9,7 @@
     "dev:web": "npm --prefix web run dev",
     "typecheck": "npm --prefix server run typecheck && npm --prefix web run typecheck",
     "test": "npm --prefix server test && npm --prefix web test",
-    "build": "npm --prefix server run build && npm --prefix web run build"
+    "build": "npm --prefix server run build && npm --prefix web run build",
+    "version:set": "node scripts/set-version.mjs"
   }
 }

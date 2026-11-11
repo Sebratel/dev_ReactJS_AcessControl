@@ -1,0 +1,3 @@
+# Pendências de migração já existentes (uma por linha): <arquivo>:<regra>[:<serviço>]  # motivo
+# Cada linha é uma dívida registrada, não uma licença: o CI as exibe a cada execução. Remova a linha ao corrigir.
+# Projeto novo: nenhuma pendência.

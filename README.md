@@ -62,10 +62,56 @@ npm run typecheck
 
 ## Deploy (Portainer)
 
-Stack por repositório com `docker-compose.yml` (imagem única: a API serve a SPA). Preencher na stack:
-`DB_VOALLE_*`, `GOOGLE_CLIENT_ID`, `ADMIN_EMAILS` (primeiro admin), e opcionalmente `HOST_PORT` (padrão 8086).
-O volume `access-control-data` guarda o banco — **não remova**. Adicione a URL pública em
-*Authorized JavaScript origins* do cliente OAuth.
+**Modelo:** o Portainer builda a imagem a partir deste repositório Git (`docker-compose.yml`). É uma imagem
+única: a API também serve as telas.
+
+**Stack:**
+- O nome é **`dev_reactjs_acesscontrol`**, o nome do repositório em minúsculas. O compose já declara isso
+  em `name:`.
+- O serviço se chama **`backend`**, sem `container_name` fixo.
+- O volume `dev_reactjs_acesscontrol_access-control-data` guarda o banco. **Não remova.**
+
+**Variáveis da stack (Environment):**
+- `DB_VOALLE_*`;
+- `GOOGLE_CLIENT_ID`;
+- `ADMIN_EMAILS` (primeiro admin);
+- opcionalmente, `HUB_*` (conexão direta com os hubs);
+- `BACKEND_PORT`: a porta do host, na faixa Backend/API 3100–3199. O padrão é 3100. **Confira a planilha de
+  portas e o host antes do 1º deploy.**
+
+Adicione a URL pública em *Authorized JavaScript origins* do cliente OAuth.
+
+**Webhook da stack:** crie com *Re-pull image* e *Force redeployment* ligados.
+
+### Versão
+
+A versão é a mesma no `package.json`, nos `package-lock.json` e na tag da imagem do compose
+(`access-control:${APP_VERSION:-X.Y.Z}`). Ela aparece no Portainer e no `GET /api/v1/health` (campo `version`).
+Para trocar, use o comando abaixo:
+
+```bash
+npm run version:set -- 1.2.3
+```
+
+Todo PR que muda código sobe a versão: patch para correção, minor para funcionalidade e major para quebra de
+contrato. O CI recusa versão igual ou menor que a do ambiente.
+
+### CI (GitHub Actions)
+
+O `.github/workflows/ci.yml` roda em PRs e pushes para `main` e `staging`. Os jobs são:
+
+| Job | O que faz |
+|---|---|
+| `validacoes` | Versão e nomes do compose, com os scripts oficiais em `.github/scripts/` |
+| `server` | Tipos e testes do servidor |
+| `web` | Tipos, testes e build das telas |
+| `imagem` | Builda a imagem, sobe a stack com `--wait` e confere o `/health` (status e versão) e a página inicial |
+| `ci-ok` | Agrega os outros |
+
+`npm audit` roda como aviso.
+
+**Proteção da `main`** (Settings → Rules): exigir PR com 1 aprovação, exigir o check **`ci-ok`** (só ele) e
+bloquear push direto e force push.
 
 ## Importação de exports (HUB BI, HUB APPS e UpValue)
 

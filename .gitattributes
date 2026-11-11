@@ -1,0 +1,4 @@
+# fins de linha LF no repositório (Docker/Linux), qualquer que seja o editor
+* text=auto eol=lf
+*.png binary
+*.ico binary

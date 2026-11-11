@@ -1,0 +1,73 @@
+/* Tela de login — mesma identidade das outras dashboards Sebratel. */
+:root {
+  --login-fundo: #1a0508;
+  --login-grad-1: #2a070c;
+  --login-grad-2: #14060a;
+  --login-grad-3: #0d0507;
+  --login-card: #FBFAF7;
+  --login-card-texto: #252423;
+  --login-texto-2: #4d4b49;
+  --login-etiqueta-fundo: #FDF3D6;
+  --login-etiqueta-texto: #6b5200;
+  --login-aviso-fundo: #FFFBEB;
+}
+
+.login { position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; background: var(--login-fundo); color: var(--texto-sobre-escuro); display: flex; flex-direction: column; }
+.login-arte { position: absolute; inset: 0; overflow: hidden; }
+.login-arte::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 30% 35%, rgba(136, 15, 23, 0.85), transparent 70%),
+    linear-gradient(135deg, var(--login-grad-1) 0%, var(--login-grad-2) 55%, var(--login-grad-3) 100%);
+}
+.login-arte .brilho { position: absolute; border-radius: 50%; filter: blur(90px); }
+.login-arte .brilho-1 { left: -12%; top: 12%; width: min(80vw, 520px); height: min(80vw, 520px); background: rgba(217, 179, 0, 0.2); }
+.login-arte .brilho-2 { right: -6%; bottom: 8%; width: min(65vw, 430px); height: min(65vw, 430px); background: rgba(230, 108, 55, 0.18); }
+
+.login-conteudo {
+  position: relative; z-index: 1; flex: 1; display: grid; grid-template-columns: 1fr min(100%, 470px);
+  align-items: center; gap: 32px; padding: 40px clamp(20px, 5vw, 72px) 70px;
+}
+/* 780px: a 1ª linha do título ("Estoque, Romaneios, Entradas e Alocações") cabe inteira no desktop */
+.login-marca { max-width: 780px; display: grid; gap: 16px; }
+.login-marca-topo { display: flex; align-items: center; gap: 12px; }
+.login-marca-topo img { border-radius: 50%; }
+.login-marca-topo span { font-size: 15px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; }
+.login-marca h2 { margin: 0; font-size: clamp(1.7rem, 3.4vw, 2.5rem); line-height: 1.15; letter-spacing: -0.5px; }
+.login-marca h2 span { display: block; color: var(--pbi-gold); }
+.login-marca p { margin: 0; max-width: 32rem; font-size: 15px; line-height: 1.65; color: rgba(255, 255, 255, 0.86); }
+
+.login-card-wrap { display: flex; justify-content: center; }
+.login-card {
+  width: 100%; max-width: 440px; background: var(--login-card); color: var(--login-card-texto); border-radius: 18px;
+  padding: 30px 28px; display: grid; gap: 18px; box-shadow: 0 36px 72px -12px rgba(0, 0, 0, 0.6); border-top: 3px solid var(--pbi-gold);
+}
+.login-card header { display: grid; gap: 7px; }
+.login-card .etiqueta {
+  justify-self: start; background: var(--login-etiqueta-fundo); border: 1px solid var(--pbi-gold); color: var(--login-etiqueta-texto);
+  border-radius: 999px; font-size: 10px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; padding: 5px 11px;
+}
+.login-card h1 { margin: 0; font-size: 25px; letter-spacing: -0.3px; }
+.login-card header p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--login-texto-2); }
+.login-aviso { display: flex; gap: 12px; align-items: center; border: 1px solid var(--aviso-borda); background: var(--login-aviso-fundo); border-radius: 12px; padding: 13px; font-size: 13px; }
+.login-aviso .icone { width: 36px; height: 36px; flex: 0 0 auto; border-radius: 10px; background: var(--login-etiqueta-fundo); display: grid; place-items: center; color: var(--login-etiqueta-texto); }
+.login-aviso span { display: block; font-size: 11.5px; color: var(--login-texto-2); }
+.login-card .banner { color: var(--erro-texto); }
+.botao-google {
+  display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 46px; width: 100%;
+  border: none; border-radius: 12px; cursor: pointer; background: var(--pbi-vinho-fixo); color: var(--texto-sobre-escuro);
+  font-size: 14.5px; font-weight: 600; box-shadow: 0 6px 16px rgba(136, 15, 23, 0.32);
+}
+.botao-google:hover:not(:disabled) { background: var(--capa-grad-2); }
+.botao-google:disabled { opacity: 0.6; cursor: not-allowed; }
+.botao-google .marca { width: 30px; height: 30px; border-radius: 50%; background: var(--texto-sobre-escuro); display: grid; place-items: center; color: var(--pbi-vinho-fixo); }
+.login-rodape { margin: 0; text-align: center; font-size: 11.5px; color: var(--login-texto-2); }
+.login-rodape a { color: var(--pbi-vinho-fixo); font-weight: 600; }
+.login-barra {
+  position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12); background: rgba(0, 0, 0, 0.42); padding: 10px;
+  font-size: 11.5px; color: rgba(255, 255, 255, 0.88);
+}
+@media (max-width: 980px) {
+  .login-conteudo { grid-template-columns: 1fr; padding-top: 28px; gap: 24px; }
+}

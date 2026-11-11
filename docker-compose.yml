@@ -1,0 +1,74 @@
+services:
+  access-control:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: access-control:0.1.0
+    # a imagem é construída aqui, não baixada de registro (Portainer "Re-pull image")
+    pull_policy: build
+    container_name: access-control
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-8086}:8080"
+    environment:
+      TZ: America/Sao_Paulo
+      PORT: 8080
+      # atrás do proxy reverso: 1 salto (o rate limit precisa do IP real)
+      TRUST_PROXY: ${TRUST_PROXY:-1}
+
+      # ---- Voalle (db_elleven, PostgreSQL) — SOMENTE LEITURA ----
+      DB_VOALLE_HOST: ${DB_VOALLE_HOST}
+      DB_VOALLE_DATABASE: ${DB_VOALLE_DATABASE}
+      DB_VOALLE_USER: ${DB_VOALLE_USER}
+      DB_VOALLE_PASSWORD: ${DB_VOALLE_PASSWORD}
+      DB_VOALLE_PORT: ${DB_VOALLE_PORT:-5432}
+      DB_VOALLE_SCHEMA: ${DB_VOALLE_SCHEMA:-}
+
+      # ---- fila de protocolos ----
+      PROTOCOLS_REFRESH_MS: ${PROTOCOLS_REFRESH_MS:-180000}
+      PROTOCOLS_SINCE: ${PROTOCOLS_SINCE:-2026-01-01}
+
+      # ---- conexão direta com os hubs — SOMENTE LEITURA (opcional) ----
+      HUB_APPS_DB_HOST: ${HUB_APPS_DB_HOST:-}
+      HUB_APPS_DB_PORT: ${HUB_APPS_DB_PORT:-3306}
+      HUB_APPS_DB_NAME: ${HUB_APPS_DB_NAME:-DB_Hub_Apps}
+      HUB_APPS_DB_USER: ${HUB_APPS_DB_USER:-}
+      HUB_APPS_DB_PASSWORD: ${HUB_APPS_DB_PASSWORD:-}
+      HUB_APPS_DB_SSL: ${HUB_APPS_DB_SSL:-false}
+      # HUB BI: conta de serviço do Firestore (e-mail + chave, ou o JSON montado como arquivo)
+      HUB_BI_FIREBASE_PROJECT_ID: ${HUB_BI_FIREBASE_PROJECT_ID:-}
+      HUB_BI_FIREBASE_CLIENT_EMAIL: ${HUB_BI_FIREBASE_CLIENT_EMAIL:-}
+      HUB_BI_FIREBASE_PRIVATE_KEY: ${HUB_BI_FIREBASE_PRIVATE_KEY:-}
+      HUB_BI_FIREBASE_CREDENTIALS_FILE: ${HUB_BI_FIREBASE_CREDENTIALS_FILE:-}
+      HUB_SYNC_INTERVAL_MS: ${HUB_SYNC_INTERVAL_MS:-900000}
+
+      # ---- banco da aplicação (fica no volume abaixo) ----
+      DATA_PATH: /app/data
+
+      # ---- login com Google (mesmo cliente OAuth das dashboards) ----
+      AUTH_ENABLED: ${AUTH_ENABLED:-true}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      ALLOWED_DOMAIN: ${ALLOWED_DOMAIN:-sebratel.com.br}
+      # admin(s) de fábrica: só valem enquanto não houver admin na tela de Equipe
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+    volumes:
+      # cadastros, concessões e log: sem volume, cada deploy apagaria tudo
+      - access-control-data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: ${MEM_LIMIT:-512m}
+
+volumes:
+  access-control-data:

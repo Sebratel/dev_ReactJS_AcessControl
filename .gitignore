@@ -1,0 +1,25 @@
+# dependências e artefatos de build
+node_modules/
+dist/
+server/public/
+
+# dados gravados pelo app (banco SQLite com cadastros, concessões e log)
+server/data/
+server/.teste-data/
+
+# segredos — NUNCA versionar (use .env.example como modelo)
+.env
+.env.*
+!.env.example
+*.pem
+service-account*.json
+*firebase-adminsdk*.json
+secrets/
+
+# diversos
+*.log
+.DS_Store
+Thumbs.db
+
+# configuração local do Claude Code (caminhos desta máquina)
+.claude/

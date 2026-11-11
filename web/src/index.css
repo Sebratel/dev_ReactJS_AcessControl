@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/*
+ * Design system — mesma família visual das dashboards Sebratel (Estoque,
+ * COM, DEVINTEL): vinho #880F17 como marca, dourado #D9B300 de destaque,
+ * superfícies em cinza quente e o tema escuro em cinza QUENTE (nunca preto).
+ * Os componentes usam só os tokens abaixo; cores de status (verde/âmbar/rosa/
+ * azul) vêm da paleta do Tailwind com variante `dark:`.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Segoe UI", "Segoe UI Web (West European)", system-ui, -apple-system, Arial, sans-serif;
+
+  /* marca */
+  --color-primary: #880f17;
+  --color-primary-strong: #6b2328;
+  --color-primary-text: #880f17;
+  --color-primary-soft: #fcf3f4;
+  --color-on-primary: #ffffff;
+  --color-accent: #d9b300;
+  --color-accent-strong: #a38600;
+  --color-accent-soft: #fbf3d9;
+
+  /* superfícies */
+  --color-surface: #f3f2f1;
+  --color-surface-container-low: #faf9f8;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-hover: #fbf9f2;
+
+  /* texto e linhas */
+  --color-on-surface: #252423;
+  --color-on-surface-variant: #605e5c;
+  --color-outline: #e3e0dc;
+  --color-outline-strong: #c8c6c4;
+
+  --radius-3xl: 24px;
+
+  --animate-slide-in-right: slide-in-right 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-in-up: fade-in-up 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-in: fade-in 180ms ease-out;
+  --animate-pulse-dot: pulse-dot 2.4s infinite;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-primary: #a0141e;
+  --color-primary-strong: #b8323c;
+  --color-primary-text: #e58089;
+  --color-primary-soft: #3f2b2c;
+  --color-on-primary: #ffffff;
+  --color-accent: #d2b23c;
+  --color-accent-strong: #e0c55a;
+  --color-accent-soft: #453a24;
+
+  --color-surface: #262523;
+  --color-surface-container-low: #2b2a28;
+  --color-surface-container-lowest: #302e2c;
+  --color-surface-hover: #3e3b37;
+
+  --color-on-surface: #eceae7;
+  --color-on-surface-variant: #a5a19b;
+  --color-outline: #46433f;
+  --color-outline-strong: #5c5853;
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 rgba(26, 171, 64, 0.55); }
+  70% { box-shadow: 0 0 0 7px rgba(26, 171, 64, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(26, 171, 64, 0); }
+}
+
+@layer base {
+  html, body, #root { min-height: 100%; }
+  body {
+    @apply bg-surface text-on-surface font-sans antialiased;
+  }
+  button, input, select, textarea { font: inherit; }
+  ::selection { background: color-mix(in srgb, var(--color-accent) 35%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}

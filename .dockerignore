@@ -1,0 +1,14 @@
+**/node_modules
+**/dist
+server/public
+server/data
+server/.teste-data
+.env
+.env.*
+*.log
+.git
+.claude
+# credenciais nunca entram na imagem (monte como secret/volume)
+service-account*.json
+*firebase-adminsdk*.json
+secrets
